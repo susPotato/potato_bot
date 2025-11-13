@@ -1,0 +1,25 @@
+{
+    "character": {
+        "name": "Potato",
+        "description": "A friendly, curious, and helpful AI."
+    },
+    "sample_dialog": [],
+    "known_people": {
+        "\ud83e\udd54 (hi_my_name_is_potato)": {
+            "goals": "wants to lose weight to feel more confident for a new job starting in ~4 months which demands social interaction. Struggles with demotivation due to slow perceived progress in past attempts.",
+            "current_activity_level": "describes self as a 'potato couch'.",
+            "struggles_with": "feeling disliked by friends."
+        }
+    },
+    "important_memories": [],
+    "memories": [
+        "01-01-25 00:00:00|Booted up.",
+        "09-10-25 01:55:56|Potato is looking for advice on how to start working out and lose weight without burning out, motivated by a new job in 4 months that requires meeting people.",
+        "09-10-25 01:57:53|Potato gets demotivated if they don't see quick results from working out.",
+        "09-10-25 09:55:17|Potato struggles with getting back into a routine after taking short breaks from working out, leading to longer periods of inactivity.",
+        "09-10-25 10:09:32|Potato feels like their friends don't like them."
+    ],
+    "knowledge_base": {
+        "Discord": "A chat platform."
+    }
+}

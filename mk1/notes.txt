@@ -1,0 +1,19 @@
+# Potato Bot Mk1 - Model Notes
+
+This file documents the models being used in the project as of November 13, 2025.
+
+## Language Models (LLMs)
+
+The main logic for conversation, curation, and reflection is handled by local LLMs run through Ollama.
+
+- **Model:** `llama3:8b`
+- **File:** `mk1/ui/app.py`
+- **Usage:** This is currently the default model for all three core tasks: generating the bot's main response, curating memories, and reflecting on persona changes. We can configure stronger models (e.g., for the Reflector) here if needed.
+
+## Embedding Model
+
+This model is used to convert text (memories, user input) into vector embeddings for similarity searches (RAG).
+
+- **Model:** `all-MiniLM-L6-v2`
+- **File:** `mk1/models.py`
+- **Usage:** This is a small, fast, and effective model from the `sentence-transformers` library. It's loaded once and used by the `EpisodicMemoryManager` for searching and by the `Curator` when creating new memory embeddings.

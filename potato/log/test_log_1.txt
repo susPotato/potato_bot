@@ -1,0 +1,130 @@
+C:\Users\potato\Downloads\Bob-1>python -u "c:\Users\potato\Downloads\Bob-1\Potato\test_rag_system.py"
+--- Loading language models... ---
+      Using device: cuda
+      Embedding model 'all-MiniLM-L6-v2' loaded.
+      Text splitter 'fast-bunkai' loaded.
+---  RAG System End-to-End Test ---
+Using memory file: c:\Users\potato\Downloads\Bob-1\Potato\rag_system_memory\test_memories.pkl
+No memory file found at 'c:\Users\potato\Downloads\Bob-1\Potato\rag_system_memory\test_memories.pkl'. Starting fresh.
+--- Processing Turn 1/4 ---
+Found 0 relevant memories for the current turn.
+
+---  Curating memories... ---
+ Error parsing curation response from LLM: Expecting value: line 1 column 1 (char 0)
+   Raw response was: Here is the analysis and response:
+
+**Extract & Contextualize**
+
+From the conversation, I extracted the following essential new fact:
+
+* User's name is "Potato".
+
+Synthesizing this information into a well-written, standalone memory:
+
+"User's name is Potato."
+
+**Compare & Update**
+
+Since there are no existing memories to compare with, we don't need to update or remove any memories.
+
+**Output Format**
+
+Here is the response in JSON format:
+
+```
+{
+  "memories_to_add": ["User's name is Potato."],
+  "ids_to_remove": []
+}
+```
+Memory updates applied: 0 added, 0 removed.
+--- Processing Turn 2/4 ---
+Found 0 relevant memories for the current turn.
+
+---  Curating memories... ---
+ Error parsing curation response from LLM: Expecting value: line 1 column 1 (char 0)
+   Raw response was: Here's my analysis and response:
+
+**Extract & Contextualize**
+
+* Essential new fact: User loves Japanese ramen, especially tonkotsu style.
+
+Synthesized memory: "User's favorite type of ramen is Japanese, with a preference for the tonkotsu style."
+
+**Compare & Update**
+
+* Since there are no existing memories, this new information does not contradict or update any existing memories. It simply adds a new piece of knowledge to the user's profile.
+
+**Output Format**
+
+Here's my response in JSON format:
+
+```
+{
+  "memories_to_add": ["User's favorite type of ramen is Japanese, with a preference for the tonkotsu style."],
+  "ids_to_remove": []
+}
+```
+Memory updates applied: 0 added, 0 removed.
+--- Processing Turn 3/4 ---
+Found 0 relevant memories for the current turn.
+
+---  Curating memories... ---
+ Error parsing curation response from LLM: Expecting value: line 1 column 1 (char 0)
+   Raw response was: Here's the analysis and response:
+
+**Extract & Contextualize**
+
+The new information is "User prefers to use light mode for their UI". This can be synthesized into a standalone memory: "User's preferred UI theme is light mode."
+
+**Compare & Update**
+
+Since there are no existing memories, this new information does not contradict or update any existing memories. Therefore, we only need to create a new memory.
+
+**Output Format**
+
+Here is the response in JSON format:
+
+```
+{
+    "memories_to_add": ["User's preferred UI theme is light mode."],
+    "ids_to_remove": []
+}
+```
+Memory updates applied: 0 added, 0 removed.
+--- Processing Turn 4/4 ---
+Found 0 relevant memories for the current turn.
+
+---  Curating memories... ---
+ Error parsing curation response from LLM: Expecting value: line 1 column 1 (char 0)
+   Raw response was: Here's the analysis and response:
+
+**Extract & Contextualize**
+
+The new information extracted from the conversation is that the user has changed their mind and now prefers dark mode.       
+
+A good memory to create based on this information would be: "User's preferred interface theme is dark mode."
+
+**Compare & Update**
+
+Since there are no existing memories, we don't need to compare or update anything. We can simply add a new memory.
+
+**Output Format**
+
+Here's the response in JSON format:
+
+```
+{
+    "memories_to_add": ["User's preferred interface theme is dark mode."],
+    "ids_to_remove": []
+}
+```
+Memory updates applied: 0 added, 0 removed.
+
+--- ✅ Conversation Finished ---
+ Successfully saved 0 memories to 'c:\Users\potato\Downloads\Bob-1\Potato\rag_system_memory\test_memories.pkl'.
+
+--- Verifying final memory store ---
+ Loaded 0 memories from 'c:\Users\potato\Downloads\Bob-1\Potato\rag_system_memory\test_memories.pkl'.
+
+Search results for 'What is the user's UI preference?':
