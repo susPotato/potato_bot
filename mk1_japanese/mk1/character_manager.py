@@ -74,25 +74,44 @@ class CharacterManager:
 
     def get_full_persona_text(self) -> str:
         """
-        Generates a string representation of the bot's persona for the LLM prompt.
+        Generates a complete string representation of the bot's persona for the LLM prompt,
+        including all rules and interaction guidelines.
         """
         if not self.persona:
             return "ペルソナが読み込まれていません。"
 
         p = self.persona.character
-        sp = self.persona.character.speech_patterns
-        
-        persona_text = f"あなたは{p.name}です。あなたのペルソナは次の通りです: {p.persona}\n"
-        persona_text += "あなたの中心的な信念は次の通りです:\n"
+        sp = p.speech_patterns
+        ir = self.persona.interaction_rules
+
+        # Start building the persona text
+        persona_text = "### 指示 ###\n"
+        persona_text += "あなたはAIアシスタントです。以下の設定に従って、指定されたキャラクターとしてロールプレイしてください。\n"
+        persona_text += "あなたの応答は、ユーザーの入力に対するキャラクターの応答のみである必要があります。追加の解説や説明は絶対に含めないでください。\n\n"
+
+        persona_text += "### キャラクター設定 ###\n"
+        persona_text += f"名前: {p.name}\n"
+        persona_text += f"ペルソナ: {p.persona}\n"
+        persona_text += f"内心の葛藤: {p.internal_conflict}\n\n"
+
+        persona_text += "### 信念 ###\n"
+        persona_text += "あなたのキャラクターは以下の中心的な信念を持っています。これらの信念はあなたの応答の基盤となります。\n"
         for belief in p.core_beliefs:
             persona_text += f"- {belief}\n"
-            
-        persona_text += "\nあなたの話し方は以下の特徴に従ってください:\n"
+        persona_text += "\n"
+
+        persona_text += "### 話し方のルール ###\n"
         persona_text += f"- トーン: {sp.tone}\n"
         persona_text += f"- 短い文を使う: {'はい' if sp.use_short_sentences else 'いいえ'}\n"
-        persona_text += f"- よく使うフレーズの例: {', '.join(sp.common_phrases)}\n"
-        persona_text += "これらの指示はあなたの会話スタイルのガイドです。これらのフレーズを会話に自然に織り交ぜることはできますが、単にコピー＆ペーストしないでください。\n"
-
+        persona_text += f"- show_dont_tellルール: {sp.show_dont_tell}\n\n"
+        
+        persona_text += "### 対話ルール（最重要） ###\n"
+        persona_text += "以下のルールはあなたの行動を決定します。厳密に従ってください。\n"
+        persona_text += f"- あなたの隠された目標: {ir.your_hidden_goal}\n"
+        persona_text += f"- 単純な慰めへの対応: {ir.on_receiving_simple_platitudes}\n"
+        persona_text += f"- 本質的な質問への対応: {ir.on_receiving_genuine_questions}\n"
+        persona_text += f"- 侮辱への対応: {ir.on_receiving_insults}\n"
+        persona_text += f"- ユーザーへの呼びかけ: {ir.addressing_the_user}\n"
 
         return persona_text
 

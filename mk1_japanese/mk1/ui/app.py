@@ -75,7 +75,7 @@ class PotatoBot:
     "internal_monologue": "あなたの内部的な思考や感情を記述してください（日本語で）。"
 }}
 """
-        monologue_json = self.main_llm.call(system_prompt, monologue_prompt)
+        monologue_json = self.main_llm.call(system_prompt, monologue_prompt, temperature=0.3)
         internal_monologue = monologue_json.get("internal_monologue", "")
         debug_log.append(f"内部的な独白: {internal_monologue[:50]}...")
 
@@ -85,19 +85,18 @@ class PotatoBot:
 あなたの内部的な思考:
 {internal_monologue}
 
-さて、{self.char_manager.persona.character.name}として、上記の「内部的な思考」で考えたことを、そのまま会話として口に出して話すように表現してください。
-重要な点:
-- 内部的な思考の具体的な内容（例：「思ってないのかもしれない」「最近の私にはちょっと暗」）を保持してください。
-- ただし、それを自然な口語で表現してください（「思ってないのかもしれない」→「思ってないかも」のように）。
-- 思考を簡略化したり、一般的な表現に置き換えたりしないでください。
-- あなたの思考の流れや感情の変化を反映させてください。
+さて、{self.char_manager.persona.character.name}として、上記の「内部的な思考」を、会話の応答として忠実に表現してください。
+最重要ルール:
+- **絶対に、内部的な思考に含まれていない新しい感情、希望、またはアイデアを追加してはいけません。**
+- 思考をそのまま一行のセリフに変換してください。
+- 応答は完全な文章で、口語的な日本語でなければなりません。
 
 あなたの応答は必ず次の構造を持つJSONオブジェクトでなければなりません:
 {{
     "response_message": "あなたの応答メッセージ（日本語で）。"
 }}
 """
-        bot_response_json = self.main_llm.call(system_prompt, response_prompt)
+        bot_response_json = self.main_llm.call(system_prompt, response_prompt, temperature=0.3)
         debug_log.append(f"LLM 生JSON: {bot_response_json}")
         
         # Extract the message

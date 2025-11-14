@@ -8,13 +8,21 @@ from datetime import datetime
 class CharacterDetails(BaseModel):
     name: str
     persona: str
+    internal_conflict: str
     core_beliefs: List[str]
     speech_patterns: 'SpeechPatterns'
 
 class SpeechPatterns(BaseModel):
     use_short_sentences: bool
     tone: str
-    common_phrases: List[str]
+    show_dont_tell: str
+
+class InteractionRules(BaseModel):
+    your_hidden_goal: str
+    on_receiving_simple_platitudes: str
+    on_receiving_genuine_questions: str
+    on_receiving_insults: str
+    addressing_the_user: str
 
 class SampleDialog(BaseModel):
     speaker: str
@@ -23,6 +31,7 @@ class SampleDialog(BaseModel):
 class CorePersona(BaseModel):
     character: CharacterDetails
     knowledge_base: Dict[str, str]
+    interaction_rules: InteractionRules
     sample_dialog: List[SampleDialog]
 
 
