@@ -17,4 +17,3 @@ This model is used to convert text (memories, user input) into vector embeddings
 - **Model:** `all-MiniLM-L6-v2`
 - **File:** `mk1/models.py`
 - **Usage:** This is a small, fast, and effective model from the `sentence-transformers` library. It's loaded once and used by the `EpisodicMemoryManager` for searching and by the `Curator` when creating new memory embeddings.
-

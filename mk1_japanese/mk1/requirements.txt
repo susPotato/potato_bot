@@ -1,0 +1,7 @@
+Flask
+pydantic
+numpy
+sentence-transformers
+ollama
+torch
+fast-bunkai

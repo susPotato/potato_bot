@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポテトとチャット</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="app-container">
+        <div id="chat-container">
+            <div id="chat-window">
+                <div id="chat-messages"></div>
+            </div>
+            <form id="chat-form">
+                <input type="text" id="message-input" placeholder="メッセージを入力..." autocomplete="off">
+                <button type="submit">送信</button>
+            </form>
+        </div>
+        <div id="debug-panel">
+            <h3 class="debug-title">システムログ</h3>
+            <div id="debug-log"></div>
+        </div>
+    </div>
+    <div id="controls-panel">
+        <div class="control-group">
+            <h4>テンプレート管理</h4>
+            <div class="control-row">
+                <select id="template-select"></select>
+                <button id="load-template-btn">読み込み</button>
+                <button id="delete-template-btn" class="danger">削除</button>
+            </div>
+             <div class="control-row">
+                <input type="text" id="template-name-input" placeholder="新しいテンプレート名...">
+                <button id="save-template-btn">現在の状態を保存</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <h4>リセット</h4>
+             <div class="control-row">
+                <button id="reset-btn" class="danger">選択したテンプレートで初期化</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
