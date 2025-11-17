@@ -1,0 +1,6 @@
+Flask
+pydantic
+numpy
+sentence-transformers
+ollama
+torch
