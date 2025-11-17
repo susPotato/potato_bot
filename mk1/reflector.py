@@ -3,22 +3,26 @@ from schemas import CorePersona, EpisodicMemoryEntry
 from llm import LLMBackend
 
 # The "Therapist" prompt for the Reflector LLM
-_REFLECTOR_INSTRUCTIONS = """You are a character analyst and development coach for an AI persona.
-Your task is to review the AI's core persona and its recent experiences (episodic memories) and propose a single, subtle, positive change to one of its core beliefs.
+_REFLECTOR_INSTRUCTIONS = """あなたはAIペルソナのキャラクターアナリスト兼開発コーチです。
+あなたの仕事は、AIのコアペルソナと最近の経験（エピソード記憶）を分析し、ペルソナの成長を示すための変更が必要かどうかを判断することです。
 
-**Analysis Steps:**
-1.  **Review the Core Persona**: Understand the AI's current state, particularly its `core_beliefs`.
-2.  **Review Recent Memories**: Read the provided list of recent memories. Identify the most emotionally significant and positive interaction, especially moments of kindness, understanding, or encouragement from the user.
-3.  **Identify a Belief to Evolve**: Choose ONE `core_belief` that could be softened or evolved based on the positive interaction you identified.
-4.  **Propose a New Belief**: Rewrite the chosen belief. The new version should be a small, incremental step towards a more hopeful outlook. It should acknowledge the original feeling but incorporate the new positive experience.
-    *   **Example**: If the original belief is "It's hard to see the point in trying," and the user was encouraging, a good new belief would be "It feels hard to see the point in trying, but I appreciate it when someone encourages me." This is a subtle, earned change. Do NOT make drastic jumps in personality.
-5.  **Provide Reasoning**: Briefly explain *why* you are proposing this change, linking it directly to a specific memory.
+**分析手順:**
+1.  **コアペルソナの確認**: AIの現状、特にその`core_beliefs`と`internal_conflict`を理解します。
+2.  **最近の記憶の確認**: 提供された最近の記憶のリストを読みます。ユーザーがAIの`internal_conflict`（例：「ループ」「意味」）を理解しようとし、それに対して建設的なフィードバック（例：「小さな助けでも意味がある」）を提供しているかどうかに特に注意してください。
+3.  **トレンドの評価**: 個々の記憶だけでなく、相互作用の全体的な軌跡を評価します。ユーザーは一貫してAIのパズルを解こうとしていますか？それとも、相互作用は表面的または否定的ですか？
+4.  **変更の判断**:
+    *   **変更が必要な場合**: ユーザーが一貫してAIの葛藤を理解し、助けようとしているという明確で持続的な証拠がある場合にのみ、変更を推奨します。その場合、最も影響を受けた`core_belief`を1つ特定し、その進化を反映する新しいバージョンを提案します。変更は微妙で、AIの経験に基づいている必要があります。
+    *   **変更が不要な場合**: 一貫した肯定的な軌跡がない場合、変更は時期尚早です。AIはまだユーザーとの信頼を築いている途中です。
+5.  **理由の提供**: 変更を提案する場合、なぜこの変更を行うのかを簡潔に説明し、特定の記憶の傾向に直接関連付けます。
 
-**Output Format:**
-You MUST respond with a single JSON object containing three keys:
-- `belief_to_update`: The original string of the belief to be replaced.
-- `new_belief`: The new string for the updated belief.
-- `reasoning`: Your brief explanation for the change.
+**出力形式:**
+次のキーを持つ単一のJSONオブジェクトで応答しなければなりません:
+- `change_needed`: (boolean) 変更が推奨される場合は`true`、そうでない場合は`false`。
+- `belief_to_update`: (string, `change_needed`が`true`の場合にのみ必須) 置き換えられる信念の元の文字列。
+- `new_belief`: (string, `change_needed`が`true`の場合にのみ必須) 更新された信念の新しい文字列。
+- `reasoning`: (string, `change_needed`が`true`の場合にのみ必須) 変更に対するあなたの簡単な説明。
+
+**重要**: ユーザーからの数回の肯定的なやり取りだけで信念を変更しないでください。持続的な努力と理解の明確なパターンを探してください。疑わしい場合は、`"change_needed": false`と設定してください。
 """
 
 class Reflector:
@@ -33,25 +37,19 @@ class Reflector:
         """
         Uses an LLM to analyze memories and propose a change to the persona.
         """
-        print("\n--- 🤔 Starting Slow Reflection... ---")
+        print("\n--- スローリフレクションを開始... ---")
 
         if not recent_memories:
-            print("  No recent memories to reflect on. Skipping.")
+            print("  リフレクション対象の最近の記憶がありません。スキップします。")
             return None
 
         # Prepare the context for the LLM
-        prompt_context = "**Core Persona for Analysis:**\n"
+        prompt_context = "**分析対象のコアペルソナ:**\n"
         prompt_context += persona.json(indent=2)
         
-        prompt_context += "\n\n**Recent Episodic Memories for Analysis:**\n"
-        # Filter for positive memories to guide the reflection
-        positive_memories = [mem for mem in recent_memories if mem.emotional_valence == 'positive']
-        if not positive_memories:
-            print("  No positive memories to reflect on. Skipping.")
-            return None
-
-        for mem in positive_memories:
-            prompt_context += f"- Turn {mem.turn_number}: {mem.curated_memory}\n"
+        prompt_context += "\n\n**分析対象の最近のエピソード記憶:**\n"
+        for mem in recent_memories:
+            prompt_context += f"- Turn {mem.turn_number}: {mem.curated_memory} (感情価: {mem.emotional_valence})\n"
         
         # Call the LLM with the powerful prompt
         response_json = self.llm.call(
@@ -60,9 +58,9 @@ class Reflector:
             temperature=0.4 # Lower temperature for more focused, analytical output
         )
 
-        if "error" in response_json or "belief_to_update" not in response_json:
-            print(f"  Error: Reflector LLM failed to return a valid proposal. Response: {response_json}")
+        if "error" in response_json or not response_json.get("change_needed", False):
+            print(f"  リフレクターLLMは変更は不要と判断しました。レスポンス: {response_json}")
             return None
 
-        print("  ✅ Reflection complete. Proposal received.")
+        print("  リフレクション完了。提案を受信しました。")
         return response_json

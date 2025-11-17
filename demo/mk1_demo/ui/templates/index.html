@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Potato</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="app-container">
+        <div id="chat-container">
+            <div id="chat-window">
+                <div id="chat-messages"></div>
+            </div>
+            <form id="chat-form">
+                <input type="text" id="message-input" placeholder="Type your message..." autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        <div id="debug-panel">
+            <h3 class="debug-title">System Log</h3>
+            <div id="debug-log"></div>
+        </div>
+    </div>
+    <div id="controls-panel">
+        <div class="control-group">
+            <h4>Manage Templates</h4>
+            <div class="control-row">
+                <select id="template-select"></select>
+                <button id="load-template-btn">Load</button>
+                <button id="delete-template-btn" class="danger">Delete</button>
+            </div>
+             <div class="control-row">
+                <input type="text" id="template-name-input" placeholder="New template name...">
+                <button id="save-template-btn">Save Current State</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <h4>Reset</h4>
+             <div class="control-row">
+                <button id="reset-btn" class="danger">Wipe and Reset to Selected</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
